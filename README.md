@@ -1,50 +1,73 @@
-# CRUD Code Test 
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+</p>
 
-Please read each note very carefully!
-Feel free to add/change the project structure to a clean architecture to your view.
-and if you are not able to work on the FrontEnd project, you can add a Swagger UI
-in a new Front project.
+[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+[circleci-url]: https://circleci.com/gh/nestjs/nest
 
-Create a simple CRUD application with [NestJS](https://nestjs.com/) that implements the below model:
+  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+    <p align="center">
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
+<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
+<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
+<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
+<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
+<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
+  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
+    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
+  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
+</p>
+  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
+  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+
+## Description
+
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+
+## Installation
+
+```bash
+$ pnpm install
 ```
-Customer {
-	FirstName
-	LastName
-	DateOfBirth
-	PhoneNumber
-	Email
-	BankAccountNumber
-}
+
+## Running the app
+
+```bash
+# development
+$ pnpm run start
+
+# watch mode
+$ pnpm run start:dev
+
+# production mode
+$ pnpm run start:prod
 ```
 
-Create a NestJS template project
+## Test
 
-## Practices and patterns:
+```bash
+# unit tests
+$ pnpm run test
 
-- [TDD](https://en.wikipedia.org/wiki/Test-driven_development)
-- [BDD](https://en.wikipedia.org/wiki/Behavior-driven_development)
-- [DDD](https://en.wikipedia.org/wiki/Domain-driven_design)
-- [Clean architecture](https://dev.to/dipakahirav/modern-api-development-with-nodejs-express-and-typescript-using-clean-architecture-1m77)
-- [CQRS](https://en.wikipedia.org/wiki/Command%E2%80%93query_separation#Command_query_responsibility_separation) pattern ([Event sourcing](https://en.wikipedia.org/wiki/Domain-driven_design#Event_sourcing)).
-- Clean git commits that show your work progress, each commit must provide your decision-making process for each change or selection.
+# e2e tests
+$ pnpm run test:e2e
 
-### Validations
+# test coverage
+$ pnpm run test:cov
+```
 
-- During Create; validate the phone number to be a valid *mobile* number only (Please use [Google LibPhoneNumber](https://github.com/google/libphonenumber) to validate number at the backend).
+## Support
 
-- A Valid email and a valid bank account number must be checked before submitting the form.
+Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
-- Customers must be unique in the database: By `Firstname`, `Lastname`, and `DateOfBirth`.
+## Stay in touch
 
-- Email must be unique in the database.
+- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
+- Website - [https://nestjs.com](https://nestjs.com/)
+- Twitter - [@nestframework](https://twitter.com/nestframework)
 
-### Storage
+## License
 
-- Store the phone number in a database with minimized space storage (choose `varchar`/`string`, or `ulong` whichever store less space).
-
-### Delivery
-- Please clone this repository in a new GitHub repository in private mode and share with ID: `mason-chase` in private mode on github.com, make sure you do not erase my commits and then create a [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests) (code review).
-
-## Nice to do:
-- Front-end Web (React)
-- Docker-compose project that loads the database service automatically, which `docker-compose up`
+Nest is [MIT licensed](LICENSE).
