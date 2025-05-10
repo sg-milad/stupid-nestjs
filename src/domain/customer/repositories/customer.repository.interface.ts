@@ -7,4 +7,7 @@ export interface ICustomerRepository {
     findByIdentity(firstName: string, lastName: string, dateOfBirth: Date): Promise<Customer | null>;
     exists(firstName: string, lastName: string, dateOfBirth: Date): Promise<boolean>;
     existsByEmail(email: string): Promise<boolean>;
+    findAll(): Promise<Customer[]>;
+    update(customer: Customer): Promise<void>;
+    delete(id: string): Promise<void>;
 }
