@@ -24,7 +24,9 @@ describe('CustomerController (e2e)', () => {
         customerRepositoryMock = {
             save: jest.fn(),
             findOne: jest.fn(),
+            find: jest.fn(), // Add this missing method
             count: jest.fn().mockResolvedValue(0),
+            delete: jest.fn(), // Add this missing method
             createQueryBuilder: jest.fn(() => ({
                 where: jest.fn().mockReturnThis(),
                 andWhere: jest.fn().mockReturnThis(),
@@ -50,7 +52,6 @@ describe('CustomerController (e2e)', () => {
 
     describe('/customers (POST)', () => {
         it('should create a new customer', async () => {
-
             const createCustomerDto = {
                 firstName: 'John',
                 lastName: 'Doe',
@@ -116,6 +117,111 @@ describe('CustomerController (e2e)', () => {
             // Act & Assert
             return request(app.getHttpServer())
                 .get(`/customers/${nonExistentId}`)
+                .expect(404);
+        });
+    });
+
+    describe('GET /customers', () => {
+        it('should return an array of customers', async () => {
+            // Fix: Mock the find method properly
+            customerRepositoryMock.find.mockResolvedValue([mockCustomer]);
+
+            await request(app.getHttpServer())
+                .get('/customers')
+                .expect(200)
+                .expect(res => {
+                    expect(Array.isArray(res.body)).toBe(true);
+                    expect(res.body[0]).toHaveProperty('id', mockCustomer.id);
+                });
+        });
+    });
+
+    describe('PUT /customers/:id', () => {
+        it('should update and return the customer', async () => {
+            const updateDto = {
+                firstName: 'mmad',           // changed
+                lastName: 'dooo',            // changed
+                dateOfBirth: '1991-01-01',   // changed
+                phoneNumber: '+12025550123',
+                email: 'mmad.dooo@example.com', // changed
+                bankAccountNumber: '12345678901234',
+            };
+
+            const updatedCustomer = {
+                id: mockCustomer.id,
+                firstName: updateDto.firstName,
+                lastName: updateDto.lastName,
+                dateOfBirth: new Date(updateDto.dateOfBirth),
+                phoneNumber: updateDto.phoneNumber,
+                email: updateDto.email,
+                bankAccountNumber: updateDto.bankAccountNumber,
+            };
+
+            // Set up mocks with proper sequencing for the test flow
+            let findOneCallCount = 0;
+
+            // Mock findOne to return different results based on call sequence
+            customerRepositoryMock.findOne.mockImplementation(() => {
+                findOneCallCount++;
+                // First call: Check if customer exists (in command handler)
+                if (findOneCallCount === 1) {
+                    return Promise.resolve(mockCustomer);
+                }
+                // Second call: Get updated customer (in query handler after update)
+                else {
+                    return Promise.resolve(updatedCustomer);
+                }
+            });
+
+            // Mock save operation
+            customerRepositoryMock.save.mockImplementation(() => {
+                return Promise.resolve(updatedCustomer);
+            });
+
+            await request(app.getHttpServer())
+                .put(`/customers/${mockCustomer.id}`)
+                .send(updateDto)
+                .expect(200)
+                .expect(res => {
+                    expect(res.body).toHaveProperty('id', mockCustomer.id);
+                    expect(res.body.firstName).toBe(updateDto.firstName);
+                    expect(res.body.email).toBe(updateDto.email);
+                });
+        });
+
+        it('should return 404 if customer not found', async () => {
+            customerRepositoryMock.findOne.mockResolvedValue(null);
+
+            await request(app.getHttpServer())
+                .put(`/customers/non-existent-id`)
+                .send({
+                    firstName: 'X',
+                    lastName: 'Y',
+                    dateOfBirth: '2000-01-01',
+                    phoneNumber: '+10000000000',
+                    email: 'x@y.com',
+                    bankAccountNumber: '00000000000000',
+                })
+                .expect(404);
+        });
+    });
+
+    describe('DELETE /customers/:id', () => {
+        it('should delete the customer and return 200', async () => {
+            // Fix: Properly mock findOne and delete methods
+            customerRepositoryMock.findOne.mockResolvedValue(mockCustomer);
+            customerRepositoryMock.delete.mockResolvedValue({ affected: 1 });
+
+            await request(app.getHttpServer())
+                .delete(`/customers/${mockCustomer.id}`)
+                .expect(200);
+        });
+
+        it('should return 404 if customer not found', async () => {
+            customerRepositoryMock.findOne.mockResolvedValue(null);
+
+            await request(app.getHttpServer())
+                .delete('/customers/non-existent-id')
                 .expect(404);
         });
     });

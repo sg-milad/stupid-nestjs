@@ -7,6 +7,7 @@ import { PhoneNumber } from "./../../src/domain/customer/value-objects/phone-num
 import { CustomerEntity } from "./../../src/infrastructure/persistence/entities/customer.orm-entity";
 import { CustomerRepository } from "./../../src/infrastructure/persistence/repositories/customer.repository";
 import { Repository } from "typeorm";
+import { v4 as uuidv4 } from 'uuid';
 
 describe('CustomerRepository', () => {
     let repository: CustomerRepository;
@@ -22,6 +23,9 @@ describe('CustomerRepository', () => {
                         save: jest.fn(),
                         findOne: jest.fn(),
                         count: jest.fn(),
+                        find: jest.fn(),
+                        delete: jest.fn(),
+                        update: jest.fn(),
                         createQueryBuilder: jest.fn(() => ({
                             where: jest.fn().mockReturnThis(),
                             andWhere: jest.fn().mockReturnThis(),
@@ -221,5 +225,52 @@ describe('CustomerRepository', () => {
             });
             expect(result).toBe(false);
         });
+    });
+    it('should find all customers', async () => {
+        // Arrange
+        const customerEntity1 = new CustomerEntity();
+        customerEntity1.id = '1';
+        customerEntity1.firstName = 'John';
+        customerEntity1.lastName = 'Doe';
+        customerEntity1.dateOfBirth = new Date('1990-01-01');
+        customerEntity1.phoneNumber = '+447123456789';
+        customerEntity1.email = 'john.doe@example.com';
+        customerEntity1.bankAccountNumber = '12345678';
+
+        const customerEntity2 = new CustomerEntity();
+        customerEntity2.id = '2';
+        customerEntity2.firstName = 'Jane';
+        customerEntity2.lastName = 'Doe';
+        customerEntity2.dateOfBirth = new Date('1992-02-02');
+        customerEntity2.phoneNumber = '+447987654321';
+        customerEntity2.email = 'jane.doe@example.com';
+        customerEntity2.bankAccountNumber = '87654321';
+
+        jest.spyOn(ormRepository, 'find').mockResolvedValue([customerEntity1, customerEntity2]);
+
+        // Act
+        const customers = await repository.findAll();
+
+        // Assert
+        expect(customers).toHaveLength(2);
+        expect(customers[0].getId()).toBe('1');
+        expect(customers[0].getFirstName()).toBe('John');
+        expect(customers[0].getLastName()).toBe('Doe');
+
+        expect(customers[1].getId()).toBe('2');
+        expect(customers[1].getFirstName()).toBe('Jane');
+        expect(customers[1].getLastName()).toBe('Doe');
+    });
+
+    it('should delete a customer', async () => {
+        // Arrange
+        const id = uuidv4();
+        const deleteSpy = jest.spyOn(ormRepository, 'delete').mockResolvedValue({ affected: 1 } as any);
+
+        // Act
+        await repository.delete(id);
+
+        // Assert
+        expect(deleteSpy).toHaveBeenCalledWith(id);
     });
 });

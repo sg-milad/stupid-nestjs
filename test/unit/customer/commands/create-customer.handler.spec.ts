@@ -8,7 +8,7 @@ import { PhoneNumber } from "../../../../src/domain/customer/value-objects/phone
 import { Email } from "../../../../src/domain/customer/value-objects/email.value-object";
 import { BankAccount } from "../../../../src/domain/customer/value-objects/bank-account.value-object";
 import { v4 as uuidv4 } from "uuid";
-import { CreateCustomerHandler } from "src/application/customer/commands";
+import { CreateCustomerHandler } from "../../../../src/application/customer/commands";
 
 // Mock modules
 jest.mock("../../../../src/domain/customer/value-objects/phone-number.value-object");
