@@ -1,6 +1,5 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { CustomerCreatedEvent } from '../events/customer-created.event';
-import { CustomerFoundEvent } from '../events/customer-found.event';
 import { PhoneNumber } from '../value-objects/phone-number.value-object';
 import { Email } from '../value-objects/email.value-object';
 import { BankAccount } from '../value-objects/bank-account.value-object';
@@ -65,20 +64,6 @@ export class Customer extends AggregateRoot {
         );
 
         return customer;
-    }
-
-    public markAsFound(): void {
-        this.apply(
-            new CustomerFoundEvent(
-                this.id,
-                this.firstName,
-                this.lastName,
-                this.dateOfBirth,
-                this.phoneNumber.getValue(),
-                this.email.getValue(),
-                this.bankAccountNumber.getValue(),
-            ),
-        );
     }
 
     public getId(): string {
