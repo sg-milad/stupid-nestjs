@@ -26,7 +26,7 @@ export class CreateCustomerRequestDto {
     })
     @IsNotEmpty()
     @IsDateString()
-    dateOfBirth: string;
+    dateOfBirth: Date;
 
     @ApiProperty({
         description: "Mobile phone number with country code",
