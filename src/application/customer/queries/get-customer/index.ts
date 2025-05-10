@@ -1,3 +1,3 @@
-import { GetCustomerHandler } from './get-customer.handler';
+import { GetCustomerHandler } from "./get-customer.handler";
 
 export const QueryHandlers = [GetCustomerHandler];
