@@ -7,6 +7,6 @@ export function ConfigModuleOptions(): ConfigModuleOptions {
     options.isGlobal = true;
     options.cache = true;
     options.load = [appConfig];
-    options.envFilePath = `.env.${process.env.NODE_ENV}`;
+    options.envFilePath = `.env`;
     return options;
 }
