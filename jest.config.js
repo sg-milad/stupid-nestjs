@@ -1,4 +1,5 @@
 module.exports = {
+    testEnvironment: "node",
     moduleFileExtensions: ["js", "json", "ts"],
     rootDir: ".",
     // only look for tests under the "test" folder:
