@@ -13,7 +13,7 @@ export class CustomerRepository implements ICustomerRepository {
     constructor(
         @InjectRepository(CustomerEntity)
         private readonly customerRepository: Repository<CustomerEntity>,
-    ) {}
+    ) { }
 
     async save(customer: Customer): Promise<void> {
         const customerOrmEntity = this.mapToOrmEntity(customer);
@@ -106,5 +106,18 @@ export class CustomerRepository implements ICustomerRepository {
             email,
             bankAccountNumber,
         );
+    }
+    async findAll(): Promise<Customer[]> {
+        const customerOrmEntities = await this.customerRepository.find();
+        return customerOrmEntities.map(entity => this.mapToDomainEntity(entity));
+    }
+
+    async update(customer: Customer): Promise<void> {
+        const customerOrmEntity = this.mapToOrmEntity(customer);
+        await this.customerRepository.save(customerOrmEntity);
+    }
+
+    async delete(id: string): Promise<void> {
+        await this.customerRepository.delete(id);
     }
 }
