@@ -7,7 +7,7 @@ import { PhoneNumber } from "../../../../src/domain/customer/value-objects/phone
 import { Email } from "../../../../src/domain/customer/value-objects/email.value-object";
 import { BankAccount } from "../../../../src/domain/customer/value-objects/bank-account.value-object";
 import { CustomerDto } from "../../../../src/application/customer/queries/customer.dto";
-import { GetCustomerHandler } from "src/application/customer/queries";
+import { GetCustomerHandler } from "../../../../src/application/customer/queries";
 
 describe('GetCustomerHandler', () => {
     let handler: GetCustomerHandler;
