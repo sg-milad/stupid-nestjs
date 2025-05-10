@@ -1,48 +1,58 @@
-name: Unit Tests -crud-customer
+name: Run Tests
 
 on:
     push:
-        branches:
-            - "*"
+        branches: [main]
     pull_request:
+        branches: [main]
 
 jobs:
-    build:
+    test:
         runs-on: ubuntu-latest
 
-        strategy:
-            matrix:
-                node-version: [20.x]
+        services:
+            mysql:
+                image: mysql:8.0
+                env:
+                    MYSQL_ROOT_PASSWORD: root
+                    MYSQL_DATABASE: test_db
+                ports:
+                    - 3306:3306
+                options: >-
+                    --health-cmd="mysqladmin ping --silent"
+                    --health-interval=10s
+                    --health-timeout=5s
+                    --health-retries=5
+
+        env:
+            DB_HOST: 127.0.0.1
+            DB_PORT: 3306
+            DB_USERNAME: root
+            DB_PASSWORD: root
+            DB_NAME: test_db
+            NODE_ENV: test
 
         steps:
-            - name: Checkout Repository
-              uses: actions/checkout@v2
+            - name: Checkout repository
+              uses: actions/checkout@v3
 
-            - name: Use Node.js ${{ matrix.node-version }}
+            - name: Setup Node.js
               uses: actions/setup-node@v3
               with:
-                  node-version: ${{ matrix.node-version }}
+                  node-version: "18"
 
-            - name: Install pnpm
-              uses: pnpm/action-setup@v2
-              with:
-                  version: 8
+            - name: Install dependencies
+              run: npm ci
 
-            - name: Get pnpm store directory
-              shell: bash
+            - name: Wait for MySQL to be ready
               run: |
-                  echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+                  echo "Waiting for MySQL..."
+                  until mysqladmin ping -h127.0.0.1 -uroot -proot --silent; do
+                    sleep 1
+                  done
 
-            - uses: actions/cache@v3
-              name: Setup pnpm cache
-              with:
-                  path: ${{ env.STORE_PATH }}
-                  key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-                  restore-keys: |
-                      ${{ runner.os }}-pnpm-store-
+            - name: Run migrations (optional)
+              run: npm run typeorm:migration:run
 
-            - name: Install Dependencies
-              run: pnpm install
-
-            - name: Run Tests
-              run: pnpm run test
+            - name: Run tests
+              run: npm run test
