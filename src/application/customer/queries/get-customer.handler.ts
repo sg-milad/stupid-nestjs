@@ -1,15 +1,15 @@
 import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 import { Inject, NotFoundException } from "@nestjs/common";
 import { GetCustomerQuery } from "./get-customer.query";
+import { ICustomerRepository } from "src/domain/customer/repositories/customer.repository.interface";
 import { CustomerDto } from "./customer.dto";
-import { ICustomerRepository } from "../../../../domain/customer/repositories/customer.repository.interface";
 
 @QueryHandler(GetCustomerQuery)
 export class GetCustomerHandler implements IQueryHandler<GetCustomerQuery> {
     constructor(
         @Inject("ICustomerRepository")
         private readonly customerRepository: ICustomerRepository,
-    ) {}
+    ) { }
 
     async execute(query: GetCustomerQuery): Promise<CustomerDto> {
         const customer = await this.customerRepository.findById(query.id);

@@ -1,12 +1,12 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from "@nestjs/cqrs";
 import { ConflictException, Inject } from "@nestjs/common";
 import { v4 as uuidv4 } from "uuid";
+import { Customer } from "src/domain/customer/entities/customer.entity";
+import { ICustomerRepository } from "src/domain/customer/repositories/customer.repository.interface";
+import { BankAccount } from "src/domain/customer/value-objects/bank-account.value-object";
+import { Email } from "src/domain/customer/value-objects/email.value-object";
+import { PhoneNumber } from "src/domain/customer/value-objects/phone-number.value-object";
 import { CreateCustomerCommand } from "./create-customer.command";
-import { ICustomerRepository } from "../../../../domain/customer/repositories/customer.repository.interface";
-import { Customer } from "../../../../domain/customer/entities/customer.entity";
-import { PhoneNumber } from "../../../../domain/customer/value-objects/phone-number.value-object";
-import { Email } from "../../../../domain/customer/value-objects/email.value-object";
-import { BankAccount } from "../../../../domain/customer/value-objects/bank-account.value-object";
 
 @CommandHandler(CreateCustomerCommand)
 export class CreateCustomerHandler implements ICommandHandler<CreateCustomerCommand> {
