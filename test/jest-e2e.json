@@ -4,9 +4,9 @@
     "json",
     "ts"
   ],
-  "rootDir": "./test",
+  "rootDir": ".",
   "testEnvironment": "node",
-  "testRegex": ".e2e-spec.ts$",
+  "testRegex": "(/test/.*|(\\.|/)(test|spec))\\.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
   }
