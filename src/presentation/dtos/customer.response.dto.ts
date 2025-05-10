@@ -23,7 +23,7 @@ export class CustomerResponseDto {
         description: "Customer date of birth",
         example: "1990-01-01",
     })
-    dateOfBirth: string;
+    dateOfBirth: Date;
 
     @ApiProperty({
         description: "Mobile phone number in E.164 format",
