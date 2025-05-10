@@ -22,17 +22,14 @@ export class CreateCustomerHandler implements ICommandHandler<CreateCustomerComm
             command.firstName,
             command.lastName,
             command.dateOfBirth,
+            command.email
         );
+        console.log(customerExists);
 
         if (customerExists) {
             throw new ConflictException(
-                'Customer with same first name, last name and date of birth already exists',
+                'Customer already exists',
             );
-        }
-
-        const emailExists = await this.customerRepository.existsByEmail(command.email);
-        if (emailExists) {
-            throw new ConflictException('Email is already in use');
         }
 
         const phoneNumber = PhoneNumber.create(command.phoneNumber);

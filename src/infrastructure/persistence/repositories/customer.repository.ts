@@ -58,18 +58,25 @@ export class CustomerRepository implements ICustomerRepository {
         return this.mapToDomainEntity(customerOrmEntity);
     }
 
-    async exists(firstName: string, lastName: string, dateOfBirth: Date): Promise<boolean> {
-        const dateOnly = dateOfBirth.toISOString().split('T')[0];
+    async exists(
+        firstName: string,
+        lastName: string,
+        dateOfBirth: Date,
+        email: string
+    ): Promise<boolean> {
+        const dob = dateOfBirth.toISOString().substring(0, 10);
 
-        const found = await this.customerRepository
+        const count = await this.customerRepository
             .createQueryBuilder('c')
             .where('c.firstName = :firstName', { firstName })
-            .andWhere('c.lastName  = :lastName', { lastName })
-            .andWhere('DATE(c.dateOfBirth) = :dob', { dob: dateOnly })
-            .getOne();
+            .andWhere('c.lastName = :lastName', { lastName })
+            .andWhere('DATE(c.dateOfBirth) = :dob', { dob })
+            .where('c.email = :email', { email: email.toLowerCase() })
+            .getCount();
 
-        return found !== undefined;
+        return count > 0;
     }
+
 
     async existsByEmail(email: string): Promise<boolean> {
         const count = await this.customerRepository.count({
