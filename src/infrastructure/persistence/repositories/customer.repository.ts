@@ -10,105 +10,113 @@ import { BankAccount } from '../../../domain/customer/value-objects/bank-account
 
 @Injectable()
 export class CustomerRepository implements ICustomerRepository {
-    constructor(
-        @InjectRepository(CustomerEntity)
-        private readonly customerRepository: Repository<CustomerEntity>,
-    ) { }
+  constructor(
+    @InjectRepository(CustomerEntity)
+    private readonly customerRepository: Repository<CustomerEntity>,
+  ) {}
 
-    async save(customer: Customer): Promise<void> {
-        const customerOrmEntity = this.mapToOrmEntity(customer);
-        await this.customerRepository.save(customerOrmEntity);
+  async save(customer: Customer): Promise<void> {
+    const customerOrmEntity = this.mapToOrmEntity(customer);
+    await this.customerRepository.save(customerOrmEntity);
+  }
+
+  async findById(id: string): Promise<Customer | null> {
+    const customerOrmEntity = await this.customerRepository.findOne({
+      where: { id },
+    });
+    if (!customerOrmEntity) {
+      return null;
     }
 
-    async findById(id: string): Promise<Customer | null> {
-        const customerOrmEntity = await this.customerRepository.findOne({ where: { id } });
-        if (!customerOrmEntity) {
-            return null;
-        }
+    return this.mapToDomainEntity(customerOrmEntity);
+  }
 
-        return this.mapToDomainEntity(customerOrmEntity);
+  async findByEmail(email: string): Promise<Customer | null> {
+    const customerOrmEntity = await this.customerRepository.findOne({
+      where: { email },
+    });
+    if (!customerOrmEntity) {
+      return null;
     }
 
-    async findByEmail(email: string): Promise<Customer | null> {
-        const customerOrmEntity = await this.customerRepository.findOne({ where: { email } });
-        if (!customerOrmEntity) {
-            return null;
-        }
+    return this.mapToDomainEntity(customerOrmEntity);
+  }
 
-        return this.mapToDomainEntity(customerOrmEntity);
+  async findByIdentity(
+    firstName: string,
+    lastName: string,
+    dateOfBirth: Date,
+  ): Promise<Customer | null> {
+    const customerOrmEntity = await this.customerRepository.findOne({
+      where: {
+        firstName,
+        lastName,
+        dateOfBirth,
+      },
+    });
+
+    if (!customerOrmEntity) {
+      return null;
     }
 
-    async findByIdentity(
-        firstName: string,
-        lastName: string,
-        dateOfBirth: Date,
-    ): Promise<Customer | null> {
-        const customerOrmEntity = await this.customerRepository.findOne({
-            where: {
-                firstName,
-                lastName,
-                dateOfBirth,
-            },
-        });
+    return this.mapToDomainEntity(customerOrmEntity);
+  }
 
-        if (!customerOrmEntity) {
-            return null;
-        }
+  async exists(
+    firstName: string,
+    lastName: string,
+    dateOfBirth: Date,
+  ): Promise<boolean> {
+    const dateOnly = dateOfBirth.toISOString().substring(0, 10);
 
-        return this.mapToDomainEntity(customerOrmEntity);
-    }
+    const count = await this.customerRepository
+      .createQueryBuilder('c')
+      .where('c.firstName = :firstName', { firstName })
+      .andWhere('c.lastName  = :lastName', { lastName })
+      .andWhere('c.dateOfBirth = :dateOnly', { dateOnly })
+      .getCount();
 
-    async exists(
-        firstName: string,
-        lastName: string,
-        dateOfBirth: Date,
-    ): Promise<boolean> {
-        const dateOnly = dateOfBirth.toISOString().substring(0, 10);
+    return count > 0;
+  }
 
-        const count = await this.customerRepository
-            .createQueryBuilder('c')
-            .where('c.firstName = :firstName', { firstName })
-            .andWhere('c.lastName  = :lastName', { lastName })
-            .andWhere('c.dateOfBirth = :dateOnly', { dateOnly })
-            .getCount();
+  async existsByEmail(email: string): Promise<boolean> {
+    const count = await this.customerRepository.count({
+      where: { email },
+    });
 
-        return count > 0;
-    }
+    return count > 0;
+  }
 
-    async existsByEmail(email: string): Promise<boolean> {
-        const count = await this.customerRepository.count({
-            where: { email },
-        });
+  private mapToOrmEntity(customer: Customer): CustomerEntity {
+    const customerOrmEntity = new CustomerEntity();
+    customerOrmEntity.id = customer.getId();
+    customerOrmEntity.firstName = customer.getFirstName();
+    customerOrmEntity.lastName = customer.getLastName();
+    customerOrmEntity.dateOfBirth = customer.getDateOfBirth();
+    customerOrmEntity.phoneNumber = customer.getPhoneNumber().getValue();
+    customerOrmEntity.email = customer.getEmail().getValue();
+    customerOrmEntity.bankAccountNumber = customer
+      .getBankAccountNumber()
+      .getValue();
 
-        return count > 0;
-    }
+    return customerOrmEntity;
+  }
 
-    private mapToOrmEntity(customer: Customer): CustomerEntity {
-        const customerOrmEntity = new CustomerEntity();
-        customerOrmEntity.id = customer.getId();
-        customerOrmEntity.firstName = customer.getFirstName();
-        customerOrmEntity.lastName = customer.getLastName();
-        customerOrmEntity.dateOfBirth = customer.getDateOfBirth();
-        customerOrmEntity.phoneNumber = customer.getPhoneNumber().getValue();
-        customerOrmEntity.email = customer.getEmail().getValue();
-        customerOrmEntity.bankAccountNumber = customer.getBankAccountNumber().getValue();
+  private mapToDomainEntity(customerOrmEntity: CustomerEntity): Customer {
+    const phoneNumber = PhoneNumber.create(customerOrmEntity.phoneNumber);
+    const email = Email.create(customerOrmEntity.email);
+    const bankAccountNumber = BankAccount.create(
+      customerOrmEntity.bankAccountNumber,
+    );
 
-        return customerOrmEntity;
-    }
-
-    private mapToDomainEntity(customerOrmEntity: CustomerEntity): Customer {
-        const phoneNumber = PhoneNumber.create(customerOrmEntity.phoneNumber);
-        const email = Email.create(customerOrmEntity.email);
-        const bankAccountNumber = BankAccount.create(customerOrmEntity.bankAccountNumber);
-
-        return new Customer(
-            customerOrmEntity.id,
-            customerOrmEntity.firstName,
-            customerOrmEntity.lastName,
-            customerOrmEntity.dateOfBirth,
-            phoneNumber,
-            email,
-            bankAccountNumber,
-        );
-    }
+    return new Customer(
+      customerOrmEntity.id,
+      customerOrmEntity.firstName,
+      customerOrmEntity.lastName,
+      customerOrmEntity.dateOfBirth,
+      phoneNumber,
+      email,
+      bankAccountNumber,
+    );
+  }
 }

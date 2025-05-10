@@ -6,27 +6,26 @@ import { ICustomerRepository } from '../../../../domain/customer/repositories/cu
 
 @QueryHandler(GetCustomerQuery)
 export class GetCustomerHandler implements IQueryHandler<GetCustomerQuery> {
-    constructor(
-        @Inject('ICustomerRepository')
-        private readonly customerRepository: ICustomerRepository,
-    ) { }
+  constructor(
+    @Inject('ICustomerRepository')
+    private readonly customerRepository: ICustomerRepository,
+  ) {}
 
-    async execute(query: GetCustomerQuery): Promise<CustomerDto> {
-        const customer = await this.customerRepository.findById(query.id);
+  async execute(query: GetCustomerQuery): Promise<CustomerDto> {
+    const customer = await this.customerRepository.findById(query.id);
 
-        if (!customer) {
-            throw new NotFoundException(`Customer with id ${query.id} not found`);
-        }
-
-        return new CustomerDto(
-            customer.getId(),
-            customer.getFirstName(),
-            customer.getLastName(),
-            customer.getDateOfBirth(),
-            customer.getPhoneNumber().getValue(),
-            customer.getEmail().getValue(),
-            customer.getBankAccountNumber().getValue(),
-        );
-
+    if (!customer) {
+      throw new NotFoundException(`Customer with id ${query.id} not found`);
     }
+
+    return new CustomerDto(
+      customer.getId(),
+      customer.getFirstName(),
+      customer.getLastName(),
+      customer.getDateOfBirth(),
+      customer.getPhoneNumber().getValue(),
+      customer.getEmail().getValue(),
+      customer.getBankAccountNumber().getValue(),
+    );
+  }
 }
