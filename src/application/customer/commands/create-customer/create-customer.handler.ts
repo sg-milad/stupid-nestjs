@@ -14,11 +14,9 @@ export class CreateCustomerHandler implements ICommandHandler<CreateCustomerComm
         @Inject("ICustomerRepository")
         private readonly customerRepository: ICustomerRepository,
         private readonly eventPublisher: EventPublisher,
-    ) {}
+    ) { }
 
     async execute(command: CreateCustomerCommand): Promise<string> {
-        console.log(command);
-
         const customerExists = await this.customerRepository.exists(command.firstName, command.lastName, command.dateOfBirth);
 
         if (customerExists) {
