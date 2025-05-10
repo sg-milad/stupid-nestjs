@@ -1,8 +1,7 @@
-import { Entity, Column, PrimaryColumn, Index, Unique } from 'typeorm';
+import { Entity, Column, PrimaryColumn, Unique } from 'typeorm';
 
 @Entity('customers')
 @Unique(['firstName', 'lastName', 'dateOfBirth'])
-@Index(['email'], { unique: true })
 export class CustomerEntity {
     @PrimaryColumn({ length: 36 })
     id: string;
@@ -20,7 +19,7 @@ export class CustomerEntity {
     @Column({ length: 20 })
     phoneNumber: string;
 
-    @Column({ length: 255 })
+    @Column({ length: 255, unique: true })
     email: string;
 
     @Column({ length: 50 })

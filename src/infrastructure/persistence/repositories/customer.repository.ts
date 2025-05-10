@@ -62,21 +62,18 @@ export class CustomerRepository implements ICustomerRepository {
         firstName: string,
         lastName: string,
         dateOfBirth: Date,
-        email: string
     ): Promise<boolean> {
-        const dob = dateOfBirth.toISOString().substring(0, 10);
+        const dateOnly = dateOfBirth.toISOString().substring(0, 10);
 
         const count = await this.customerRepository
             .createQueryBuilder('c')
             .where('c.firstName = :firstName', { firstName })
-            .andWhere('c.lastName = :lastName', { lastName })
-            .andWhere('DATE(c.dateOfBirth) = :dob', { dob })
-            .where('c.email = :email', { email: email.toLowerCase() })
+            .andWhere('c.lastName  = :lastName', { lastName })
+            .andWhere('c.dateOfBirth = :dateOnly', { dateOnly })
             .getCount();
 
         return count > 0;
     }
-
 
     async existsByEmail(email: string): Promise<boolean> {
         const count = await this.customerRepository.count({
