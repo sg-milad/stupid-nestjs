@@ -6,10 +6,10 @@ import { GetCustomerQuery } from "../../application/customer/queries/get-custome
 import { CreateCustomerRequestDto } from "../dtos/create-customer.request.dto";
 import { CustomerResponseDto } from "../dtos/customer.response.dto";
 import { PhoneValidatorService } from "../../infrastructure/validation/phone-validator.service";
-import { CustomerDto } from "src/application/customer/queries/customer.dto";
-import { GetAllCustomersQuery } from "src/application/customer/queries/get-all-customer.query";
-import { DeleteCustomerCommand } from "src/application/customer/commands/delete-customer.command";
-import { UpdateCustomerCommand } from "src/application/customer/commands/update-customer.command";
+import { CustomerDto } from "./../../application/customer/queries/customer.dto";
+import { GetAllCustomersQuery } from "./../..//application/customer/queries/get-all-customer.query";
+import { DeleteCustomerCommand } from "./../..//application/customer/commands/delete-customer.command";
+import { UpdateCustomerCommand } from "./../..//application/customer/commands/update-customer.command";
 import { UpdateCustomerRequestDto } from "../dtos/update-customer.request.dto";
 
 @ApiTags("customers")
