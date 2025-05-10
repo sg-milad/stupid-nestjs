@@ -1,14 +1,14 @@
 import { Test } from "@nestjs/testing";
 import { ConflictException } from "@nestjs/common";
 import { EventPublisher } from "@nestjs/cqrs";
-import { CreateCustomerHandler } from "../../../../src/application/customer/commands/create-customer/create-customer.handler";
-import { CreateCustomerCommand } from "../../../../src/application/customer/commands/create-customer/create-customer.command";
+import { CreateCustomerCommand } from "../../../../src/application/customer/commands/create-customer.command";
 import { ICustomerRepository } from "../../../../src/domain/customer/repositories/customer.repository.interface";
 import { Customer } from "../../../../src/domain/customer/entities/customer.entity";
 import { PhoneNumber } from "../../../../src/domain/customer/value-objects/phone-number.value-object";
 import { Email } from "../../../../src/domain/customer/value-objects/email.value-object";
 import { BankAccount } from "../../../../src/domain/customer/value-objects/bank-account.value-object";
 import { v4 as uuidv4 } from "uuid";
+import { CreateCustomerHandler } from "src/application/customer/commands";
 
 // Mock modules
 jest.mock("../../../../src/domain/customer/value-objects/phone-number.value-object");

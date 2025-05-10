@@ -5,8 +5,8 @@ import { CustomerEntity } from "../../infrastructure/persistence/entities/custom
 import { CustomerRepository } from "../../infrastructure/persistence/repositories/customer.repository";
 import { CustomerController } from "../../presentation/controllers/customer.controller";
 import { ValidationModule } from "../../infrastructure/validation/validation.module";
-import { CommandHandlers } from "./commands/create-customer";
-import { QueryHandlers } from "./queries/get-customer";
+import { CommandHandlers } from "./commands";
+import { QueryHandlers } from "./queries";
 
 @Module({
     imports: [CqrsModule, TypeOrmModule.forFeature([CustomerEntity]), ValidationModule],
@@ -20,4 +20,4 @@ import { QueryHandlers } from "./queries/get-customer";
         },
     ],
 })
-export class CustomerModule {}
+export class CustomerModule { }

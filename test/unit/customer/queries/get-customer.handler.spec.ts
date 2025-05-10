@@ -1,13 +1,13 @@
 import { Test } from "@nestjs/testing";
 import { NotFoundException } from "@nestjs/common";
-import { GetCustomerHandler } from "../../../../src/application/customer/queries/get-customer/get-customer.handler";
-import { GetCustomerQuery } from "../../../../src/application/customer/queries/get-customer/get-customer.query";
+import { GetCustomerQuery } from "../../../../src/application/customer/queries/get-customer.query";
 import { ICustomerRepository } from "../../../../src/domain/customer/repositories/customer.repository.interface";
 import { Customer } from "../../../../src/domain/customer/entities/customer.entity";
 import { PhoneNumber } from "../../../../src/domain/customer/value-objects/phone-number.value-object";
 import { Email } from "../../../../src/domain/customer/value-objects/email.value-object";
 import { BankAccount } from "../../../../src/domain/customer/value-objects/bank-account.value-object";
-import { CustomerDto } from "../../../../src/application/customer/queries/get-customer/customer.dto";
+import { CustomerDto } from "../../../../src/application/customer/queries/customer.dto";
+import { GetCustomerHandler } from "src/application/customer/queries";
 
 describe('GetCustomerHandler', () => {
     let handler: GetCustomerHandler;

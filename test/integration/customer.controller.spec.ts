@@ -1,8 +1,8 @@
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { TestingModule, Test } from "@nestjs/testing";
-import { CreateCustomerCommand } from "./../../src/application/customer/commands/create-customer/create-customer.command";
-import { CustomerDto } from "./../../src/application/customer/queries/get-customer/customer.dto";
-import { GetCustomerQuery } from "./../../src/application/customer/queries/get-customer/get-customer.query";
+import { CreateCustomerCommand } from "../../src/application/customer/commands/create-customer.command";
+import { CustomerDto } from "../../src/application/customer/queries/customer.dto";
+import { GetCustomerQuery } from "../../src/application/customer/queries/get-customer.query";
 import { CustomerController } from "./../../src/presentation/controllers/customer.controller";
 import { CreateCustomerRequestDto } from "./../../src/presentation/dtos/create-customer.request.dto";
 import { CustomerResponseDto } from "./../../src/presentation/dtos/customer.response.dto";
