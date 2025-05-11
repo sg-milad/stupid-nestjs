@@ -1,4 +1,4 @@
-name: Run Tests
+name: Run Unit and Integration Tests
 
 on:
     push:
@@ -9,28 +9,6 @@ on:
 jobs:
     test:
         runs-on: ubuntu-latest
-
-        services:
-            mysql:
-                image: mysql:8.0
-                env:
-                    MYSQL_ROOT_PASSWORD: root
-                    MYSQL_DATABASE: test_db
-                ports:
-                    - 3306:3306
-                options: >-
-                    --health-cmd="mysqladmin ping --silent"
-                    --health-interval=10s
-                    --health-timeout=5s
-                    --health-retries=5
-
-        env:
-            DB_HOST: 127.0.0.1
-            DB_PORT: 3306
-            DB_USERNAME: root
-            DB_PASSWORD: root
-            DB_NAME: test_db
-            NODE_ENV: test
 
         steps:
             - name: Checkout repository
@@ -44,15 +22,5 @@ jobs:
             - name: Install dependencies
               run: npm ci
 
-            - name: Wait for MySQL to be ready
-              run: |
-                  echo "Waiting for MySQL..."
-                  until mysqladmin ping -h127.0.0.1 -uroot -proot --silent; do
-                    sleep 1
-                  done
-
-            - name: Run migrations (optional)
-              run: npm run typeorm:migration:run
-
-            - name: Run tests
-              run: npm run test
+            - name: Run unit and integration tests
+              run: npm run test:unit && npm run test:integration
