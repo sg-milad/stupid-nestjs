@@ -16,6 +16,9 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
             entities: [join(__dirname, "..", "persistence", "entities", "*.orm-entity{.ts,.js}")],
             synchronize: true,
             logging: false,
+            retryAttempts: 20,
+            retryDelay: 3000,
+            connectTimeout: 60000,
         };
     }
 }
