@@ -19,7 +19,9 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "test:unit": "jest --config jest.config.js test/unit",
-    "test:integration": "jest --config jest.config.js test/integration"
+    "test:integration": "jest --config jest.config.js test/integration",
+    "bdd": "cucumber-js --import test/bdd/**/*.ts --loader ts-node/esm",
+    "bdd:report": "cucumber-js && cat test/bdd/reports/cucumber-report.json | npx cucumber-html-reporter"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
