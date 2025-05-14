@@ -1,12 +1,17 @@
 # ![nestjs32x32](https://github.com/imanhpr/nest-assignment/assets/56130647/facef099-7c17-4d9c-ae36-84265b05e31a) stupid-crud-customer
 
-## Practices and patterns:
-TDD
-BDD
-DDD
-Clean architecture
-CQRS pattern (Event sourcing).
 
+Create a simple CRUD application with [NestJS](https://nestjs.com/) that implements the below model:
+```
+Customer {
+	FirstName
+	LastName
+	DateOfBirth
+	PhoneNumber
+	Email
+	BankAccountNumber
+}
+```
 please copy and past these commands
 
 ```
