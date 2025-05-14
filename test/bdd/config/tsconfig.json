@@ -1,0 +1,12 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "module": "ESNext",
+        "moduleResolution": "NodeNext",
+        "target": "ES2022",
+        "outDir": "../../dist/test/bdd",
+        "types": ["node", "jest", "cucumber"]
+    },
+    "include": ["**/*.ts"],
+    "exclude": ["node_modules"]
+}
