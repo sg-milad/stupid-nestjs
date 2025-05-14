@@ -1,4 +1,3 @@
-// test/bdd/step-definitions/domain/email-value-object.steps.ts
 import { When, Then } from '@cucumber/cucumber';
 import { expect } from 'chai';
 import { Email } from '../../../../src/domain/customer/value-objects/email.value-object';

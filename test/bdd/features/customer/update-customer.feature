@@ -1,4 +1,3 @@
-# test/bdd/features/customer/update-customer.feature
 Feature: Customer Update
   As a system user
   I want to update customer information

@@ -1,4 +1,3 @@
-# test/bdd/features/domain/email-value-object.feature
 Feature: Email Value Object
   As a developer
   I want to validate email addresses

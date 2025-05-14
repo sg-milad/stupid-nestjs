@@ -1,4 +1,3 @@
-// test/bdd/step-definitions/delete-customer.steps.ts
 import { When, Then } from '@cucumber/cucumber';
 import * as request from 'supertest';
 import { expect } from 'chai';

@@ -1,4 +1,3 @@
-# test/bdd/features/customer/delete-customer.feature
 Feature: Customer Deletion
   As a system user
   I want to delete customers

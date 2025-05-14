@@ -1,4 +1,3 @@
-// test/bdd/step-definitions/handlers/create-customer-handler.steps.ts
 import { Given, When, Then } from '@cucumber/cucumber';
 import { Test } from '@nestjs/testing';
 import { ConflictException } from '@nestjs/common';

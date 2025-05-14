@@ -1,4 +1,3 @@
-# test/bdd/features/customer/get-customer.feature
 Feature: Customer Retrieval
   As a system user
   I want to retrieve customer information

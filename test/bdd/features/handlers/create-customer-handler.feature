@@ -1,4 +1,3 @@
-# test/bdd/features/handlers/create-customer-handler.feature
 Feature: Create Customer Command Handler
   As a developer
   I want to ensure the CreateCustomerHandler works correctly

@@ -1,4 +1,3 @@
-// test/bdd/hooks/hooks.ts
 import { After, AfterAll, Before, BeforeAll } from '@cucumber/cucumber';
 import { testContext } from '../step-definitions/common.steps';
 
